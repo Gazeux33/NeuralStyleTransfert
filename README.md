@@ -28,3 +28,4 @@ init methode can be:
 
 
 
+Paper:<a href="https://arxiv.org/pdf/1705.04058" target="_blank">Neural Style Transfer: A Review</a>
