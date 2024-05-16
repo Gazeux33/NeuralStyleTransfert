@@ -18,10 +18,10 @@ def load_image(img_path, target_shape=None):
         raise Exception(f'Path does not exist: {img_path}')
     img = Image.open(img_path).convert('RGB')
 
-    img = cv.imread(img_path)[:, :, ::-1]  # [:, :, ::-1] converts BGR (opencv format...) into RGB
+    img = cv.imread(img_path)[:, :, ::-1]
 
-    if target_shape is not None:  # resize section
-        if isinstance(target_shape, int) and target_shape != -1:  # scalar -> implicitly setting the height
+    if target_shape is not None:
+        if isinstance(target_shape, int) and target_shape != -1:
             current_height, current_width = img.shape[:2]
             new_height = target_shape
             new_width = int(current_width * (new_height / current_height))

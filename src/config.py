@@ -10,9 +10,9 @@ ITERATION = 1000
 # adam, content init -> (cw, sw, tv, lr) = (1e5, 1e5, 1e-1, 1e1)
 # adam, style   init -> (cw, sw, tv, lr) = (1e5, 1e2, 1e-1, 1e1)
 # adam, random  init -> (cw, sw, tv, lr) = (1e5, 1e2, 1e-1, 1e1)
-CONTENT_WEIGHT = 1e3
-STYLE_WEIGHT = 3e4
-TV_WEIGHT = 1e0
+CONTENT_WEIGHT = 1
+STYLE_WEIGHT = 1
+TV_WEIGHT = 1
 
 target_content_layer = 4
 target_style_layer = [0, 1, 2, 3, 5]

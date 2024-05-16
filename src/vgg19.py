@@ -34,18 +34,12 @@ class Vgg19(nn.Module):
             param.requires_grad = False
 
     def forward(self, x):
-        x = self.slice1(x)
-        layer1_1 = x
-        x = self.slice2(x)
-        layer2_1 = x
-        x = self.slice3(x)
-        layer3_1 = x
-        x = self.slice4(x)
-        layer4_1 = x
-        x = self.slice5(x)
-        conv4_2 = x
-        x = self.slice6(x)
-        layer5_1 = x
+        layer1_1 = self.slice1(x)
+        layer2_1 = self.slice2(layer1_1)
+        layer3_1 = self.slice3(layer2_1)
+        layer4_1 = self.slice4(layer3_1)
+        conv4_2 = self.slice5(layer4_1)
+        layer5_1 = self.slice6(conv4_2)
         return layer1_1, layer2_1, layer3_1, layer4_1, conv4_2, layer5_1
 
     def get_transform(self):
