@@ -21,5 +21,5 @@ CONTENT_DIR = Path("data/content")
 STYLE_DIR = Path("data/style")
 RESULT_DIR = Path("data/results")
 
-content_name = "eiffel.png"
-style_name = "starry_night.jpeg"
+content_name = "ville.png"
+style_name = "motion.png"
