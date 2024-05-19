@@ -10,6 +10,8 @@ class Vgg19(nn.Module):
         super(Vgg19, self).__init__()
         self.weights = models.VGG19_Weights.DEFAULT
         self.vgg_19_features = models.vgg19(weights=self.weights).features
+        self.content_layers = 4
+        self.style_layers = [0, 1, 2, 3, 5]
 
         self.slice1 = torch.nn.Sequential()
         self.slice2 = torch.nn.Sequential()
@@ -41,6 +43,3 @@ class Vgg19(nn.Module):
         conv4_2 = self.slice5(layer4_1)
         layer5_1 = self.slice6(conv4_2)
         return layer1_1, layer2_1, layer3_1, layer4_1, conv4_2, layer5_1
-
-    def get_transform(self):
-        return self.weights.transforms()

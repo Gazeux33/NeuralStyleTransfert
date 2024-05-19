@@ -8,9 +8,9 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 
 from torchvision.transforms import transforms
-
 IMAGENET_MEAN_255 = [123.675, 116.28, 103.53]
 IMAGENET_STD_NEUTRAL = [1, 1, 1]
+
 
 
 def load_image(img_path, target_shape=None):
@@ -34,34 +34,16 @@ def load_image(img_path, target_shape=None):
     return img
 
 
-def transform_image(img: Image, device: torch.device) -> torch.Tensor:
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.mul(255)),
-        transforms.Normalize(mean=IMAGENET_MEAN_255, std=IMAGENET_STD_NEUTRAL)
-    ])
-    img_transformed = transform(img).to(device).unsqueeze(0)
-    return img_transformed
 
 
-def gram_matrix(y):
-    (b, ch, h, w) = y.size()
-    features = y.view(b, ch, w * h)
-    features_t = features.transpose(1, 2)
-    gram = features.bmm(features_t) / (ch * h * w)
-    return gram
 
 
-def total_variation(y):
-    return torch.sum(torch.abs(y[:, :, :, :-1] - y[:, :, :, 1:])) + \
-        torch.sum(torch.abs(y[:, :, :-1, :] - y[:, :, 1:, :]))
 
 
-def save_image(img, name, path):
-    dump_img = np.copy(img)
-    dump_img += np.array(IMAGENET_MEAN_255).reshape((1, 1, 3))
-    dump_img = np.clip(dump_img, 0, 255).astype('uint8')
-    cv.imwrite(os.path.join(path, name), dump_img[:, :, ::-1])
+
+
+
+
 
 
 def get_name(content_name, style_name):
@@ -77,9 +59,7 @@ def display_image(img):
     plt.show()
 
 
-def save_img(img, path, name):
-    result_img_path = os.path.join(path, f"{name}.png")
-    plt.imsave(result_img_path, img)
+
 
 
 def get_uint8_range(x):
@@ -90,3 +70,5 @@ def get_uint8_range(x):
         return x
     else:
         raise ValueError(f'Expected numpy array got {type(x)}')
+
+
