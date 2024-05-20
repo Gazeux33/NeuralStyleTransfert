@@ -1,29 +1,49 @@
-# Neural Style Transfert
+# Neural Style Transfert(NST)
 
 <br>
 
 This project is an implementation of Neural Style Transfer using PyTorch. Neural Style Transfer is a deep learning technique that merges the style of one image with the content of another, creating visually striking results by blending artistic features with photographic details.
 
-style transfert different of neural style transfert
+# What is NST ? 
+
+<div align="center">
+	<img src="https://github.com/Gazeux33/NeuralStyleTransfert/blob/main/assets/principle.png" width="700">
+</div>
+
+# How does it work ? 
+
+<div align="center">
+	<img src="https://github.com/Gazeux33/NeuralStyleTransfert/blob/main/assets/howdoesitwork.png" width="700">
+</div>
+
+# Style Loss
+
+<div align="center">
+	<img src="https://github.com/Gazeux33/NeuralStyleTransfert/blob/main/assets/styleloss.png" width="700">
+</div>
+
+# Content Loss
+
+<div align="center">
+	<img src="https://github.com/Gazeux33/NeuralStyleTransfert/blob/main/assets/contentloss.png" width="700">
+</div>
+
+# Extract characteristics with VGG19
+
+<div align="center">
+	<img src="https://github.com/Gazeux33/NeuralStyleTransfert/blob/main/assets/features.png" width="700">
+</div>
 
 
-feature MAP
-GRAM Matrix
-gram matrix = different product between different features map
-
-
-init methode can be:
-- style 
-- content
-- random
 
 
 
 
 
-1. prepare and load images
-2. Gaussion noise
-3. On peut parti du contenu ou bien du bruit ou bien du style je crois 
+
+
+
+
 
 
 
