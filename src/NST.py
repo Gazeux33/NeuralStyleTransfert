@@ -17,42 +17,56 @@ IMAGENET_STD_NEUTRAL = [1, 1, 1]
 
 
 def stylisize_img(content_name, style_name, saving_features=False, save_frequences=50):
+    
+    # load images
     content_img = utils.load_image(os.path.join(config.CONTENT_DIR, content_name), config.HEIGHT)
     style_img = utils.load_image(os.path.join(config.STYLE_DIR, style_name), config.HEIGHT)
 
+    # get the current device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    # init the VGG19 model
     model = Vgg19()
 
+    # transform images for VGG19
     content_transformed = transform_image(content_img, device)
     style_transformed = transform_image(style_img, device)
 
+    #create the result dir for this image
     dir_name = content_name[:content_name.index(".")] + "_" + style_name[:style_name.index(".")]
     dir_path = os.path.join(config.RESULT_DIR, dir_name)
     os.makedirs(dir_path, exist_ok=True)
-
+    
+    # set the init image who will be optimize to reduce loss with the optimizer
     init_img = content_transformed
     optimizing_img = Variable(init_img, requires_grad=True)
+    optimizer = torch.optim.LBFGS([optimizing_img], max_iter=config.ITERATION, line_search_fn="strong_wolfe")
 
+    # get features map of the content and style
     content_set_features_map = model(content_transformed)
     style_set_features_map = model(style_transformed)
+    
+    # save theses features
+    if saving_features:
+        save_features(content_set_features_map, os.path.join(dir_path, "features_content"))
+        save_features(style_set_features_map, os.path.join(dir_path, "features_style"))
 
-    save_features(content_set_features_map, os.path.join(dir_path, "features_content"))
-    save_features(style_set_features_map, os.path.join(dir_path, "features_style"))
-
+    # get the target content and style(layer 4 for content and other for style )
     target_content = content_set_features_map[model.content_layers]
     target_style = [gram_matrix(x) for i, x in enumerate(style_set_features_map) if i in model.style_layers]
 
-    save_grams(target_style, os.path.join(dir_path, "grams_matrix"))
+    # save grams matrix
+    if saving_features:
+        save_grams(target_style, os.path.join(dir_path, "grams_matrix"))
 
-    optimizer = torch.optim.LBFGS([optimizing_img], max_iter=config.ITERATION, line_search_fn="strong_wolfe")
-
+    # init counter and history for plots
     counter = 0
     total_loss_history = []
     content_loss_history = []
     style_loss_history = []
     tv_loss_history = []
 
+    #definition of the closure function yo optimize the image(function for the optimizing loop)    
     def optimize_step():
         nonlocal counter
         optimizer.zero_grad()
@@ -69,12 +83,15 @@ def stylisize_img(content_name, style_name, saving_features=False, save_frequenc
         counter += 1
         return total_loss
 
+    # lauch the optimizing loop
     optimizer.step(optimize_step)
     save_img(optimizing_img, os.path.join(dir_path, "results"), counter)
 
+    # plot results at the end 
     plot_results(
         {"content_loss": content_loss_history, "style_loss": style_loss_history,
          "tv_loss": tv_loss_history}, os.path.join(config.RESULT_DIR,dir_name, "plot.png"))
+
 
 
 def gram_matrix(y):
